@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mqtt": "^5.0.5",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.3",
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "start": "yarn ts-node src/server.ts",
+    "dev": "nodemon src/server.ts"
+  }
+}
