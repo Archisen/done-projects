@@ -7,7 +7,12 @@ let client: MqttClient;
 const topic = "done-crusep23";
 
 const connectMQTT = (req: Request, res: Response) => {
-    client = connect('mqtt://broker.hivemq.com');
+    try {
+        client = connect('mqtt://broker.hivemq.com');
+    } catch (error) {
+        res.status(500).json({error: 'something went wrong trying to connect'});
+    }
+    res.status(200).json({body: "Connected to mqttBroker"});
 
     client.on("connect", () => {
         console.log(" connected to MQTT broker");
@@ -39,7 +44,8 @@ const sendMQTT = (req: Request, res: Response) => {
         } catch (error) {
             return res.status(500).json({error: 'Could not reconnect to Broker'});
         }
-        sendMQTT(req, res);
+        // sendMQTT(req, res);
+        return res.status(500).json({body: 'Messgae Sent!!'});
     }
     
     res.json({

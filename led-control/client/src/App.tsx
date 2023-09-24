@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 
 function App() {
@@ -7,30 +8,39 @@ function App() {
     LED_ON
   };
   
-  interface MQTT_Message {
-    message: string;
-    isCommand: boolean;
-    command?: mqttCommand;
-  };
+  // interface MQTT_Message {
+  //   message: string;
+  //   isCommand: boolean;
+  //   command?: mqttCommand;
+  // };
 
-  const [userMessage, setUserMessage] = useState<MQTT_Message>(); 
-  const [messageInput, setMessageInput] = useState<string> ('');
+  const [messageInput, setMessageInput] = useState<string>('');
+  const [testData, setTestData] = useState<string>('');
   
-  const handleSendButtonPress = () => {
-    setUserMessage({message:messageInput, isCommand:false});
+  const handleSendButtonPress = async () => {
     // Make post request to /mqtt/
+    const response = await fetch('http://localhost:3200/mqtt/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({message: messageInput, isCommand: false})
+    });
+    
+    if (!response.ok) throw new Error('Request failed');
     console.log(messageInput);
     setMessageInput('');
   };
 
   const  handleConnectButtonPress = async () => {
     // Make get request to /mqtt/
-    const response = await fetch('http://localhost:3000/mqtt/', {
+    const response = await fetch('http://localhost:3200/mqtt/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
     });
+    
     if (!response.ok) throw new Error('Request failed');
     else console.log("Connected");
     
@@ -40,6 +50,24 @@ function App() {
     setMessageInput(event.target.value);
   };
 
+  const handleLEDButtonPress = async () => {
+    const response = await fetch('http://localhost:3200/mqtt/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({message: messageInput, isCommand: true, 
+                            mqttCommand: mqttCommand.LED_ON})
+    });
+
+    if (!response.ok) throw new Error('Request failed');
+    else console.log("LED message sent successfully");
+  }
+
+  const handleTestButtonPress =async () => {
+    const response = await axios.get("http://localhost:3200/test");
+    setTestData(response.data);
+  }
 
   return (
     <div className="App">
@@ -52,7 +80,10 @@ function App() {
         <button onClick={handleSendButtonPress}>Send</button>
         <br/>
         <button onClick={handleConnectButtonPress}>Connect</button>
-        <button className='ledButton'>LED</button>
+        <button className='ledButton' onClick={handleLEDButtonPress}>LED</button>
+        <button onClick={handleTestButtonPress}>Test </button>
+        <br />
+        <p>{testData}</p>
       </div>
       
     </div>
