@@ -12,5 +12,8 @@
     ],
     "idf.port": "/dev/cu.Bluetooth-Incoming-Port",
     "idf.pythonBinPath": "/Users/toussaintcruise/.espressif/python_env/idf5.1_py3.10_env/bin/python",
-    "idf.toolsPath": "/Users/toussaintcruise/.espressif"
+    "idf.toolsPath": "/Users/toussaintcruise/.espressif",
+    "files.associations": {
+        "task.h": "c"
+    }
 }
