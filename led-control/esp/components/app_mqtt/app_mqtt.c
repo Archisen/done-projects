@@ -15,7 +15,13 @@ esp_mqtt_client_handle_t mqtt_app_client;
 bool data_flag = false;
 char* mqtt_topic = "done-crusep23";
 
-char* mqtt_app_message;
+typedef enum {
+    LED_ON
+} mqttCommannds;
+
+cJSON* mqtt_app_message;
+const cJSON* isCommand;
+const cJSON* mqttCommand;
 
 
 static esp_err_t mqtt_app_event_handler_cb(esp_mqtt_event_handle_t event)
@@ -38,7 +44,7 @@ static esp_err_t mqtt_app_event_handler_cb(esp_mqtt_event_handle_t event)
             break;
         case MQTT_EVENT_DATA:
             ESP_LOGI(TAG,"MQTT_EVENT_DATA");
-            mqtt_app_message = cJSON_Print(event->data);
+            mqtt_app_message = cJSON_ParseWithLength(event->data, event->data_len);
             data_flag = true;
             break;
         case MQTT_EVENT_PUBLISHED:
@@ -110,10 +116,29 @@ void mqtt_app_subscribe(char *topic)
     esp_mqtt_client_subscribe(mqtt_app_client, tpc, 1);
 }
 
-void handle_incoming_data(char* data)
+void execute_command(mqttCommannds command)
 {
-    cJSON *data_JSON = cJSON_Parse(data);
+    switch (command)
+    {
+    case LED_ON:
+        if(gpio_get_level(LED_PIN) == 0) gpio_set_level(LED_PIN, 1);
+        else gpio_set_level(LED_PIN, 0);
+        break;
     
+    default:
+        printf("Unknown command");
+        break;
+    }
+}
+
+void handle_incoming_data()
+{
+    isCommand = cJSON_GetObjectItemCaseSensitive(mqtt_app_message, "isCommand");
+    if(cJSON_IsTrue(isCommand))
+    {
+        mqttCommand = cJSON_GetObjectItemCaseSensitive(mqtt_app_message, "mqttCommand");
+        if(cJSON_IsNumber(mqttCommand)) execute_command(mqttCommand->valueint);
+    }
 }
 
 
