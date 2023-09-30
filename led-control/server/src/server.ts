@@ -26,6 +26,7 @@ app.get('/test', (req: Request, res: Response) => {
 });
 
 app.use('/mqtt', mqttRoute);
+app.use('/command', require('./routes/commands'));
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -1,5 +1,15 @@
 import express from "express";
+import * as esp from "../controller/espController";
+import * as led from "../controller/ledController";
 
-const route = express.Router();
+export const router = express.Router();
 
-route.get("/",)
+router.route('/led')
+    .get(led.getLedState)
+    .put(led.setLedState);
+
+router.route('/esp')
+    .get(esp.getAllEsp32s)
+    .post(esp.createNewEsp32)
+
+

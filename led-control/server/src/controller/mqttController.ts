@@ -1,8 +1,8 @@
 import express, {Request, Response} from "express";
 import dotenv from 'dotenv';
-import { connect, Client, MqttClient } from 'mqtt';
+import { connect, MqttClient } from 'mqtt';
 
-export let client: MqttClient;
+let client: MqttClient;
 const topic = "done-crusep23";
 
 export const connectMQTT = (req: Request, res: Response) => {

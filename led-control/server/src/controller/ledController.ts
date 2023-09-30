@@ -21,7 +21,7 @@ export const setLedState = async (req:Request, res:Response) => {
     if(!req?.body?.ledNum) return res.status(400).json({
         'message':'Please specify led state'
     });
-
+    
     const espLed = await ESP32.findOne({deviceName: req.body.deviceName});
     if(!espLed) return res.status(204).json({"message": `Device: ${req.body.deviceName} not found`});
     
