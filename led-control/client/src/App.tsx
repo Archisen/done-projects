@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 
 function App() {
@@ -61,7 +61,22 @@ function App() {
     });
 
     if (!response.ok) throw new Error('Request failed');
-    else console.log("LED message sent successfully");
+    console.log(messageInput);
+    setMessageInput('');
+    // console.log("Sending axios message");
+    // const data = JSON.stringify({message: messageInput, isCommand: true, 
+    //   mqttCommand: mqttCommand.LED_ON});
+    
+    // axios.post('http://localhost:3200/mqtt/', data)
+    //   .then((response: AxiosResponse) => {
+    //     console.log('Response:', response.data);
+    //     console.log("LED message sent successfully");
+    //   })
+    //   .catch((error: AxiosError) => {
+    //     console.log("Errored");
+    //     console.error('Error:', error);
+    //   })
+
   }
 
   const handleTestButtonPress =async () => {
@@ -81,7 +96,6 @@ function App() {
         <br/>
         <button onClick={handleConnectButtonPress}>Connect</button>
         <button className='ledButton' onClick={handleLEDButtonPress}>LED</button>
-        <button onClick={handleTestButtonPress}>Test </button>
         <br />
         <p>{testData}</p>
       </div>
