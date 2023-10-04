@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios, { AxiosResponse, AxiosError } from 'axios';
+// import axios, { AxiosResponse, AxiosError } from 'axios';
 
 
 function App() {
@@ -63,26 +63,9 @@ function App() {
     if (!response.ok) throw new Error('Request failed');
     console.log(messageInput);
     setMessageInput('');
-    // console.log("Sending axios message");
-    // const data = JSON.stringify({message: messageInput, isCommand: true, 
-    //   mqttCommand: mqttCommand.LED_ON});
-    
-    // axios.post('http://localhost:3200/mqtt/', data)
-    //   .then((response: AxiosResponse) => {
-    //     console.log('Response:', response.data);
-    //     console.log("LED message sent successfully");
-    //   })
-    //   .catch((error: AxiosError) => {
-    //     console.log("Errored");
-    //     console.error('Error:', error);
-    //   })
 
   }
 
-  const handleTestButtonPress =async () => {
-    const response = await axios.get("http://localhost:3200/test");
-    setTestData(response.data);
-  }
 
   return (
     <div className="App">

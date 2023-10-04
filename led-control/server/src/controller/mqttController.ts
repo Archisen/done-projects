@@ -34,42 +34,22 @@ export const connectMQTT = (req: Request, res: Response) => {
     client.on("message", (topic, message) => {
         console.log("Messaging");
         console.log(message.toString());
-        client.end();
     });
 }
 
 export const sendMQTT = (req: Request, res: Response) => {
-    // const mqttConnected = client.connected;
-    // console.log("attempting to send mqtt request" );
-    // if(mqttConnected) {
-    //     try {
-    //         client.publish(topic, req.body.text);
-    //         retryFlag = false;
-    //     } catch (error) {
-    //         return res.status(500).json({error: 'Error sending mqtt message'});
-    //     }
-    // } 
-    // else {
-    //     console.log("Not conntected to MQTT Broker... Attempting ton reconnect");
-    //     try {
-    //         client.reconnect();
-    //     } catch (error) {
-    //         return res.status(500).json({error: 'Could not reconnect to Broker'});
-    //     }
-    //     // sendMQTT(req, res);
-    //     return res.status(500).json({body: 'Messgae Sent!!'});
-    // }
-    if(!req.body.message) console.log("No message");
-    try {
-        client.reconnect();
-    } catch (error) {
-        return res.status(500).json({error: 'Could not reconnect to Broker'});
+    if(client.connected) console.log("Client connected");
+    else {
+        console.log("Bro wtf");
+        try {
+            client.reconnect();
+        } catch (error) {
+            return res.status(500).json({error: 'Could not reconnect to Broker'});
+        }
     }
-
+    const data = JSON.stringify(req.body);
+    
     try {
-        if(client.connected) console.log("Client connected");
-        else console.log("Bro wtf");
-        const data = JSON.stringify(req.body);
         console.log("Message: " + data);
 
         client.publish(topic, data);
