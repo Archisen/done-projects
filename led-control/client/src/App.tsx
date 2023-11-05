@@ -9,8 +9,11 @@ function App() {
 
   return(
     <div>
-      Hello World
-
+      Hello World 
+      <br/>
+      <NavLink to={"/mqtt"}>MQTT</NavLink>
+      <br></br>
+      <NavLink to={"/sf"}>Salesforce Connect</NavLink>
     </div>
   )
 }
