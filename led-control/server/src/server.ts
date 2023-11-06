@@ -4,6 +4,7 @@ import cors from 'cors';
 import { connectDB } from './dbConn';
 import deviceState from './routes/deviceState';
 import bodyParser from 'body-parser';
+import sfConnectRoute from './routes/sfConnectRoute';
 
 connectDB();
 
@@ -27,6 +28,7 @@ app.get('/test', (req: Request, res: Response) => {
 
 app.use('/mqtt', mqttRoute);
 app.use('/command', deviceState);
+app.use('/sfConnect', sfConnectRoute);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

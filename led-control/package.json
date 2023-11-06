@@ -12,6 +12,6 @@
     "concurrently": "^8.2.1"
   },
   "scripts": {
-    "start":"concurrently \"yarn workspace server start\" \"yarn workspace client start\" "
+    "start": "concurrently \"yarn workspace server start\" \"yarn workspace client start\" "
   }
 }
